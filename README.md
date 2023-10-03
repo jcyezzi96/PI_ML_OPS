@@ -44,10 +44,10 @@ Estas acciones de transformación de datos desempeñaron un papel fundamental en
     Debe devolver el usuario que acumula más horas jugadas para el género dado y una lista de la acumulación de horas jugadas por año.
 
 + def **UsersRecommend( *`año` : int* )**:
-   Devuelve el top 3 de juegos MÁS recomendados por usuarios para el año dado. (reviews.recommend = True y comentarios positivos/neutrales)
+   Devuelve el top 3 de juegos MÁS recomendados por usuarios para el año dado.
 
 + def **UsersNotRecommend( *`año` : int* )**:
-   Devuelve el top 3 de juegos MENOS recomendados por usuarios para el año dado. (reviews.recommend = False y comentarios negativos)
+   Devuelve el top 3 de juegos MENOS recomendados por usuarios para el año dado.
 
 + def **sentiment_analysis( *`año` : int* )**:
     Según el año de lanzamiento, se devuelve una lista con la cantidad de registros de reseñas de usuarios que se encuentren categorizados con un análisis de sentimiento.
