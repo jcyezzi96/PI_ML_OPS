@@ -27,6 +27,7 @@ En el marco de este proyecto, se nos asignaron tareas específicas relacionadas 
 + Evaluación de la relevancia de las columnas y su eliminación, en caso de no ser útiles para la API o los modelos posteriores.
 
 Estas acciones de transformación de datos desempeñaron un papel fundamental en la preparación del conjunto de datos, garantizando su adecuación para el análisis subsiguiente y su aplicación en el desarrollo del proyecto.
+
 Para visualizar los códigos hay que entrar más abajo en el apartado de Links a un Google Drive donde están todos los archivos de Google Colab.
 
 ## <h2 align=center> **`Desarrollo de API`**</h2>
