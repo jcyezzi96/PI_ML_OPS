@@ -203,7 +203,7 @@ def sentiment_analysis(anio: int):
 @app.get("/games_recommend/{product_id}")
 def recomendacion_juego(product_id: int):
     
-    data = pd.read_csv('C:/Users/yezzi/Desktop/Henry/Labs/PI_ML_OPS-FT/data/steam.csv')
+    data = pd.read_csv('_src/Datasets/steam.csv')
     data = data.drop(columns=['specs', 'release_date'])
     data = data.head(4000)
     
