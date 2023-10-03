@@ -34,3 +34,21 @@ Estas acciones de transformación de datos desempeñaron un papel fundamental en
 </p>
 
 ### En esta etapa del proyecto, se propone disponibilizar los datos de la empresa mediante el uso del framework FastAPI. Se han definido 6 funciones para los endpoints que serán consumidos en la API, cada una de ellas con un decorador `@app.get('/')`.
+
++ def **PlayTimeGenre( *`genero` : str* )**:
+    Debe devolver `año` con mas horas jugadas para dicho género.
+
++ def **UserForGenre( *`genero` : str* )**:
+    Debe devolver el usuario que acumula más horas jugadas para el género dado y una lista de la acumulación de horas jugadas por año.
+
++ def **UsersRecommend( *`año` : int* )**:
+   Devuelve el top 3 de juegos MÁS recomendados por usuarios para el año dado. (reviews.recommend = True y comentarios positivos/neutrales)
+
++ def **UsersNotRecommend( *`año` : int* )**:
+   Devuelve el top 3 de juegos MENOS recomendados por usuarios para el año dado. (reviews.recommend = False y comentarios negativos)
+
++ def **sentiment_analysis( *`año` : int* )**:
+    Según el año de lanzamiento, se devuelve una lista con la cantidad de registros de reseñas de usuarios que se encuentren categorizados con un análisis de sentimiento.
+
++ def **recomendacion_juego( *`id de producto`* )**:
+    Ingresando el id de producto, deberíamos recibir una lista con 5 juegos recomendados similares al ingresado.
