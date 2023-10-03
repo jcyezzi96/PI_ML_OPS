@@ -1,7 +1,7 @@
 # <h1 align=center> **PROYECTO INDIVIDUAL** </h1>
 # <h1 align=center>**`Machine Learning Operations (MLOps)`**</h1>
 <p align="center">
-<img src="_src/img_1.jpg"  height=300>
+<img src="_src/mlops_1.jpg"  height=300>
 </p>
 
 ## <h2 align=center>**`Introducción y descripción del Proyecto`**</h2>
