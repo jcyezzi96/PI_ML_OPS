@@ -16,7 +16,6 @@ Vas a sus datos y te das cuenta que la madurez de los mismos es poca: Datos anid
 
 ## <h2 align=center>**`Proceso de Extracción, Transformación y Carga (ETL)`** </h2>
 
-
 En el marco de este proyecto, se nos asignaron tareas específicas relacionadas con la manipulación de datos, las cuales formaron parte integral del proceso conocido como Extracción, Transformación y Carga (ETL). Para brindarte una comprensión más detallada de cómo se llevaron a cabo estas transformaciones, a continuación, te ofrecemos una breve sinopsis de las actividades realizadas:
 
 + Desanidamiento de campos: Algunos campos, como "reviews" y "genres", se encontraban anidados en el conjunto de datos. Implementamos un proceso de desanidamiento con el fin de desglosar estos campos y permitir su integración de manera más efectiva.
@@ -28,3 +27,10 @@ En el marco de este proyecto, se nos asignaron tareas específicas relacionadas 
 + Evaluación de la relevancia de las columnas y su eliminación, en caso de no ser útiles para la API o los modelos posteriores.
 
 Estas acciones de transformación de datos desempeñaron un papel fundamental en la preparación del conjunto de datos, garantizando su adecuación para el análisis subsiguiente y su aplicación en el desarrollo del proyecto.
+
+## <h2 align=center> **`Desarrollo de API`**</h2>
+<p align="center">
+<img src="_src/api_1.jpg"  height=300>
+</p>
+
+### En esta etapa del proyecto, se propone disponibilizar los datos de la empresa mediante el uso del framework FastAPI. Se han definido 6 funciones para los endpoints que serán consumidos en la API, cada una de ellas con un decorador `@app.get('/')`.
