@@ -17,12 +17,12 @@ def read_root():
 @app.get("/playtime_genre/{genero}")
 def PlayTimeGenre(genero: str):
     
-    dfs = pd.read_parquet("C:/Users/yezzi/Desktop/Henry/Labs/PI_ML_OPS-FT/data/steam.parquet")
+    dfs = pd.read_parquet("_src/Datasets/steam.parquet")
     dfs = dfs.drop(columns=['tags', 'specs'])
     dfs['item_name'] = dfs['item_name'].astype(str)
     dfs['item_id'] = dfs['item_id'].astype(str)
 
-    dfi = pd.read_parquet("C:/Users/yezzi/Desktop/Henry/Labs/PI_ML_OPS-FT/data/items.parquet")
+    dfi = pd.read_parquet("_src/Datasets/items.parquet")
     dfi = dfi.drop(columns=['user_id'])
     dfi['item_id'] = dfi['item_id'].astype(str)
     dfi['playtime_forever'] = dfi['playtime_forever'].astype(int)
@@ -53,11 +53,11 @@ def PlayTimeGenre(genero: str):
 @app.get("/user_for_genre/{genero}")
 def UserForGenre(genero: str):
     
-    dfs = pd.read_parquet("C:/Users/yezzi/Desktop/Henry/Labs/PI_ML_OPS-FT/data/steam.parquet")
+    dfs = pd.read_parquet("_src/Datasets/steam.parquet")
     dfs = dfs.drop(columns=['tags', 'specs', 'item_name'])
     dfs['item_id'] = dfs['item_id'].astype(str)
 
-    dfi = pd.read_parquet("C:/Users/yezzi/Desktop/Henry/Labs/PI_ML_OPS-FT/data/items.parquet")
+    dfi = pd.read_parquet("_src/Datasets/items.parquet")
     dfi = dfi.drop(columns=['item_name'])
     dfi['item_id'] = dfi['item_id'].astype(str)
     dfi['playtime_forever'] = dfi['playtime_forever'].astype(int)
@@ -96,11 +96,11 @@ def UserForGenre(genero: str):
 @app.get("/users_recommend/{anio}")
 def UsersRecommend(anio: int):
     
-    dfr = pd.read_parquet("C:/Users/yezzi/Desktop/Henry/Labs/PI_ML_OPS-FT/data/reviews.parquet")
+    dfr = pd.read_parquet("_src/Datasets/reviews.parquet")
     dfr = dfr.drop(columns=['user_id'])
     dfr['item_id'] = dfr['item_id'].astype(str)
     
-    dfs = pd.read_parquet("C:/Users/yezzi/Desktop/Henry/Labs/PI_ML_OPS-FT/data/steam.parquet")
+    dfs = pd.read_parquet("_src/Datasets/steam.parquet")
     dfs = dfs.drop(columns=['genres', 'tags', 'specs', 'release_date'])
     dfs['item_name'] = dfs['item_name'].astype(str)
     dfs['item_id'] = dfs['item_id'].astype(str)
@@ -132,11 +132,11 @@ def UsersRecommend(anio: int):
 @app.get("/users_not_recommend/{anio}")
 def UsersNotRecommend(anio: int):
     
-    dfr = pd.read_parquet("C:/Users/yezzi/Desktop/Henry/Labs/PI_ML_OPS-FT/data/reviews.parquet")
+    dfr = pd.read_parquet("_src/Datasets/reviews.parquet")
     dfr = dfr.drop(columns=['user_id'])
     dfr['item_id'] = dfr['item_id'].astype(str)
     
-    dfs = pd.read_parquet("C:/Users/yezzi/Desktop/Henry/Labs/PI_ML_OPS-FT/data/steam.parquet")
+    dfs = pd.read_parquet("_src/Datasets/steam.parquet")
     dfs = dfs.drop(columns=['genres', 'tags', 'specs', 'release_date'])
     dfs['item_name'] = dfs['item_name'].astype(str)
     dfs['item_id'] = dfs['item_id'].astype(str)
@@ -168,11 +168,11 @@ def UsersNotRecommend(anio: int):
 @app.get("/sentiment_analysis/{anio}")
 def sentiment_analysis(anio: int):
 
-    dfr = pd.read_parquet("C:/Users/yezzi/Desktop/Henry/Labs/PI_ML_OPS-FT/data/reviews.parquet")
+    dfr = pd.read_parquet("_src/Datasets/reviews.parquet")
     dfr = dfr.drop(columns=['user_id'])
     dfr['item_id'] = dfr['item_id'].astype(str)
         
-    dfs = pd.read_parquet("C:/Users/yezzi/Desktop/Henry/Labs/PI_ML_OPS-FT/data/steam.parquet")
+    dfs = pd.read_parquet("_src/Datasets/steam.parquet")
     dfs = dfs.drop(columns=['genres', 'tags', 'specs'])
     dfs['item_name'] = dfs['item_name'].astype(str)
     dfs['item_id'] = dfs['item_id'].astype(str)
@@ -200,6 +200,7 @@ def sentiment_analysis(anio: int):
 
 #---------------------------------------------------------------------------------------------------------------------------
 
+#Recomendación de juegos similares en base a un id por género y etiquetas.
 @app.get("/games_recommend/{product_id}")
 def recomendacion_juego(product_id: int):
     
