@@ -186,8 +186,8 @@ def recomendacion_juego(product_id: int):
     # Ordenar los juegos según las puntuaciones de similitud
     sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
 
-    # Obtener los 3 juegos más similares (excluyendo el juego de entrada)
-    top_games_indices = [i[0] for i in sim_scores[1:4]]
+    # Obtener los 5 juegos más similares (excluyendo el juego de entrada)
+    top_games_indices = [i[0] for i in sim_scores[1:6]]
     top_games = data['item_name'].iloc[top_games_indices]
 
     return top_games.tolist()
