@@ -168,7 +168,7 @@ def sentiment_analysis(anio: int):
 def recomendacion_juego(product_id: int):
     
     # Abrir el DataSet
-    data = pd.read_parquet("_src/Datasets/steam.csv")
+    data = pd.read_csv("_src/Datasets/steam.csv")
 
     # Crear una matriz TF-IDF para calcular la similitud del coseno
     tfidf_vectorizer = TfidfVectorizer()
