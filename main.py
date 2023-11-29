@@ -9,7 +9,31 @@ app = FastAPI()
 
 @app.get("/")
 def read_root():
-    return {"message": "Bienvenido a la API de Juan Cruz Yezzi"}
+    message = """
+        <p>Bienvenido a la API de Juan Cruz Yezzi.</p>
+
+        <p>Puedes probar los endpoints cambiando la url con las siguientes palabras:</p>
+
+        <p>* Devuelve el año con mas horas jugadas para el género dado.</p>
+        <p>/playtime_genre/(género, ej: action)</p>
+
+        <p>* Devuelve el usuario que acumula más horas jugadas para el género dado y una lista de la acumulación de horas jugadas por año.</p> 
+        <p>/user_for_genre/(género, ej: adventure)</p>
+
+        <p>* Devuelve el top 3 de juegos MÁS recomendados por usuarios para el año dado.</p>  
+        <p>/users_recommend/(año, ej: 2014)</p>
+
+        <p>* Devuelve el top 3 de juegos MENOS recomendados por usuarios para el año dado.</P>
+        <p>/users_not_recommend/(año, ej: 2015)</p>
+
+        <p>* Según el año de lanzamiento, se devuelve una lista con la cantidad de registros de reseñas de usuarios que se encuentren categorizados con un análisis de sentimiento.</p>
+        <p>/sentiment_analysis/(año, ej: 2016)</P> 
+
+        <p>* Recomendación de juegos similares en base a un id por género y etiquetas.</p>
+        <p>/games_recommend/(id de juego, ej: 643980)</p>
+        """
+        
+    return HTMLResponse(content=message, status_code=200)
 
 #---------------------------------------------------------------------------------------------------------------------------
 
@@ -17,24 +41,8 @@ def read_root():
 @app.get("/playtime_genre/{genero}")
 def PlayTimeGenre(genero: str):
     
-    dfs = pd.read_parquet("_src/Datasets/steam.parquet")
-    dfs = dfs.drop(columns=['tags', 'specs'])
-    dfs['item_name'] = dfs['item_name'].astype(str)
-    dfs['item_id'] = dfs['item_id'].astype(str)
-
-    dfi = pd.read_parquet("_src/Datasets/items.parquet")
-    dfi = dfi.drop(columns=['user_id'])
-    dfi['item_id'] = dfi['item_id'].astype(str)
-    dfi['playtime_forever'] = dfi['playtime_forever'].astype(int)
-
-    df = dfi.merge(dfs, on='item_id', how='left')
-    df['release_date'] = pd.to_datetime(df['release_date'], errors='coerce')
-    df = df.dropna(subset=['release_date'])
-    df['release_date'] = df['release_date'].dt.year
-    df = df.drop(columns=['item_name_y'])
-    df = df.dropna(subset=['genres'])
-    df = df.explode('genres')
-    df['genres'] = df['genres'].str.lower()
+    # Abrir el DataSet
+    df = pd.read_parquet("_src/Datasets/merge1.parquet")
     
     # Filtrar el DataFrame para el género especificado
     df_genre = df[df['genres'] == genero]
@@ -53,22 +61,8 @@ def PlayTimeGenre(genero: str):
 @app.get("/user_for_genre/{genero}")
 def UserForGenre(genero: str):
     
-    dfs = pd.read_parquet("_src/Datasets/steam.parquet")
-    dfs = dfs.drop(columns=['tags', 'specs', 'item_name'])
-    dfs['item_id'] = dfs['item_id'].astype(str)
-
-    dfi = pd.read_parquet("_src/Datasets/items.parquet")
-    dfi = dfi.drop(columns=['item_name'])
-    dfi['item_id'] = dfi['item_id'].astype(str)
-    dfi['playtime_forever'] = dfi['playtime_forever'].astype(int)
-
-    df = dfi.merge(dfs, on='item_id', how='left')
-    df['release_date'] = pd.to_datetime(df['release_date'], errors='coerce')
-    df = df.dropna(subset=['release_date'])
-    df['release_date'] = df['release_date'].dt.year
-    df = df.dropna(subset=['genres'])
-    df = df.explode('genres')
-    df['genres'] = df['genres'].str.lower()
+    # Abrir el DataSet
+    df = pd.read_parquet("_src/Datasets/merge2.parquet")
     
     # Filtrar el DataFrame por el género dado
     genre_df = df[df['genres'] == genero]
@@ -96,18 +90,8 @@ def UserForGenre(genero: str):
 @app.get("/users_recommend/{anio}")
 def UsersRecommend(anio: int):
     
-    dfr = pd.read_parquet("_src/Datasets/reviews.parquet")
-    dfr = dfr.drop(columns=['user_id'])
-    dfr['item_id'] = dfr['item_id'].astype(str)
-    
-    dfs = pd.read_parquet("_src/Datasets/steam.parquet")
-    dfs = dfs.drop(columns=['genres', 'tags', 'specs', 'release_date'])
-    dfs['item_name'] = dfs['item_name'].astype(str)
-    dfs['item_id'] = dfs['item_id'].astype(str)
-    
-    df = dfr.merge(dfs, on='item_id', how='left')
-    df = df[['item_id', 'item_name', 'recommend', 'sentiment_analysis', 'posted']]
-    df['posted'] = pd.to_datetime(df['posted'])
+    # Abrir el DataSet
+    df = pd.read_parquet("_src/Datasets/merge3.parquet")
     
     # Filtra las revisiones para el año dado y las que cumplen con las condiciones
     reviews_filtradas = df[(df['posted'].dt.year == anio) & (df['recommend'] == True) & (df['sentiment_analysis'] >= 1)]
@@ -132,18 +116,8 @@ def UsersRecommend(anio: int):
 @app.get("/users_not_recommend/{anio}")
 def UsersNotRecommend(anio: int):
     
-    dfr = pd.read_parquet("_src/Datasets/reviews.parquet")
-    dfr = dfr.drop(columns=['user_id'])
-    dfr['item_id'] = dfr['item_id'].astype(str)
-    
-    dfs = pd.read_parquet("_src/Datasets/steam.parquet")
-    dfs = dfs.drop(columns=['genres', 'tags', 'specs', 'release_date'])
-    dfs['item_name'] = dfs['item_name'].astype(str)
-    dfs['item_id'] = dfs['item_id'].astype(str)
-    
-    df = dfr.merge(dfs, on='item_id', how='left')
-    df = df[['item_id', 'item_name', 'recommend', 'sentiment_analysis', 'posted']]
-    df['posted'] = pd.to_datetime(df['posted'])
+    # Abrir el DataSet
+    df = pd.read_parquet("_src/Datasets/merge4.parquet")
     
     # Filtra las revisiones para el año dado y las que cumplen con las condiciones
     reviews_filtradas = df[(df['posted'].dt.year == anio) & (df['recommend'] == False) & (df['sentiment_analysis'] == 0)]
@@ -168,20 +142,8 @@ def UsersNotRecommend(anio: int):
 @app.get("/sentiment_analysis/{anio}")
 def sentiment_analysis(anio: int):
 
-    dfr = pd.read_parquet("_src/Datasets/reviews.parquet")
-    dfr = dfr.drop(columns=['user_id'])
-    dfr['item_id'] = dfr['item_id'].astype(str)
-        
-    dfs = pd.read_parquet("_src/Datasets/steam.parquet")
-    dfs = dfs.drop(columns=['genres', 'tags', 'specs'])
-    dfs['item_name'] = dfs['item_name'].astype(str)
-    dfs['item_id'] = dfs['item_id'].astype(str)
-    dfs['release_date'] = pd.to_datetime(dfs['release_date'], errors='coerce')
-    dfs = dfs.dropna(subset=['release_date'])
-        
-    df = dfr.merge(dfs, on='item_id', how='left')
-    df = df[['item_id', 'item_name', 'recommend', 'sentiment_analysis', 'posted']]
-    df['posted'] = pd.to_datetime(df['posted'])
+    # Abrir el DataSet
+    df = pd.read_parquet("_src/Datasets/merge5.parquet")
 
     # Filtra las revisiones para el año dado
     reviews_anio = df[df['posted'].dt.year == anio]
@@ -204,12 +166,8 @@ def sentiment_analysis(anio: int):
 @app.get("/games_recommend/{product_id}")
 def recomendacion_juego(product_id: int):
     
-    data = pd.read_csv('_src/Datasets/steam.csv')
-    data = data.drop(columns=['specs', 'release_date'])
-    data = data.head(4000)
-    
-    # Combinar las columnas 'genres' y 'tags' en una sola columna llamada 'combined_features'
-    data['combined_features'] = data['genres'] + ' ' + data['tags']
+    # Abrir el DataSet
+    data = pd.read_parquet("_src/Datasets/steam.csv")
 
     # Crear una matriz TF-IDF para calcular la similitud del coseno
     tfidf_vectorizer = TfidfVectorizer()
@@ -227,8 +185,8 @@ def recomendacion_juego(product_id: int):
     # Ordenar los juegos según las puntuaciones de similitud
     sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
 
-    # Obtener los 5 juegos más similares (excluyendo el juego de entrada)
-    top_games_indices = [i[0] for i in sim_scores[1:6]]
+    # Obtener los 3 juegos más similares (excluyendo el juego de entrada)
+    top_games_indices = [i[0] for i in sim_scores[1:4]]
     top_games = data['item_name'].iloc[top_games_indices]
 
     return top_games.tolist()
